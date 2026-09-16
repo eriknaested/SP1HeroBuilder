@@ -1,5 +1,10 @@
 public class Hero {
 
+    void main() {
+        callHero();
+        callInventory();
+    }
+
     String name = "Bagel";
     int healthPoints = 85;
     int healthMax = 100;
@@ -34,11 +39,18 @@ public class Hero {
             System.out.println("Status: Hero dead");
         }
         displayDivider();
+
+
+        }
+    void callInventory() {
+        System.out.println("Inventory (" + inventory.length + " items):");
+        displayDivider();
+        for (int i = 0; i < inventory.length; i++) {
+            System.out.println(" - " + inventory[i]);
+        }
     }
 
-    void main() {
-        callHero();
-    }
+
 }
 
 
