@@ -68,7 +68,7 @@ public class Hero {
             System.out.println(" - " + item);
         }
         displayDivider();
-    }
+    } /qq
 
     void checkLevelUp() {
         displayDivider();
