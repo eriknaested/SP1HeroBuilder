@@ -7,7 +7,6 @@ public class Character {
     private int currentHealth;
     private int level = 1; //Alle starter i lvl 1
     private int healthMax; ; //Max health er ikke final, da vi ønsker mulighed for at øge den med ved level up.
-    //i tillæg har vi en funktion, som øger healthMax med 20 ved hvert level up.
     private int experiencePoints = 0;
     private double gold;
     // boolean isAlive;  Boolean bruges ikke længere, da vi har lavet en metode til isAlive()
@@ -40,11 +39,16 @@ public class Character {
         getInventory().printInventory();
         getWeapon().weaponInfo();
         getArmor().armorInfo();
+
+        System.out.println();
     }
 
     public void printCharacterInfo() {
         System.out.println(" === " + name + " === ");
-        System.out.println("Level: " + level + " | " + "Health: " + currentHealth + "/" + healthMax + " | " + "Gold: " + gold);
+        System.out.println("Level: " + level + " | " + "Health: " + currentHealth + "/" + healthMax + " | " + getHealthPercentage() + "%");
+        getWeapon().weaponInfo();
+        getArmor().armorInfo();
+        System.out.println();
     }
 
     public static void printClasses() {
@@ -66,6 +70,10 @@ public class Character {
 
     public Armor getArmor() {
         return armor;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void equipWeapon(Weapon weapon) {
@@ -110,23 +118,33 @@ public class Character {
         }
     }
 
-    /*
-        System.out.println("Inventory (" + inventory + " items):");
-        Formatting.displayHeader();
-        for (int i = 0; i < inventory.length; i++) {
-            System.out.println(" - " + inventory[i]);
-        }
-        for (String item : inventory) {         //For each loop er mere læseligt end alm. for loop her.
-            System.out.println(" - " + item);
-        }
-        Formatting.displayDivider();
-        */
+    public int getHealthPercentage() {
+        int healthPercentage = currentHealth * 100 / healthMax;
+        return healthPercentage;
+    }
 
-    public boolean canLevelUp() {
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void levelUp() { //level up på kommando.
+            level++;
+            experiencePoints = 0;
+            healthMax = 100 + (level - 1) * 20;//funktion, som øger healthMax med 20 ved hvert level up.
+            currentHealth = healthMax; //currentHealth nulstilles til opdaterede maxHealth.
+            System.out.println(name + " levels up to level " + level + "!");
+            System.out.println();
+            printCharacterSheet();
+            Formatting.displayDivider();
+    }
+
+    /* public boolean canLevelUp() {
         return experiencePoints > 1000 * level;
     }
 
-    public void checkLevelUp() {
+     */ //canLevelUp ikke aktiv
+
+    /* public void checkLevelUp() {
         Formatting.displayHeader();
         System.out.println("Current XP: " + experiencePoints);
         int xpForLevelUp = 1000 * level;
@@ -139,16 +157,20 @@ public class Character {
         Formatting.displayDivider();
     }
 
-    public void levelUp() {
-        checkLevelUp();  //Kan måske laves til en separat metode for, når man ikke har brug for print på status.
-        if (canLevelUp()) {
-            level++;
-            experiencePoints = 0;
-            healthMax *= 1.1; //Ganger med 1.1 for at healthMax stiger eksponentielt for hver level.
-        } else {
-            System.out.println("Cannot level up yet. Get more experience");
+     */ //checklevelup ikke aktiv
+
+    /*
+        System.out.println("Inventory (" + inventory + " items):");
+        Formatting.displayHeader();
+        for (int i = 0; i < inventory.length; i++) {
+            System.out.println(" - " + inventory[i]);
         }
-    }
+        for (String item : inventory) {         //For each loop er mere læseligt end alm. for loop her.
+            System.out.println(" - " + item);
+        }
+        Formatting.displayDivider();
+        */
+
 
     /* public void checkStatus() {
         if (isHealthCritical()) {
@@ -174,7 +196,7 @@ public class Character {
         }
         System.out.println("Hero alive: " + isAlive);
         displayDivider();
-         */ //Udekommenteret if-statements, da isHealthCritical og isAlive laves til egne metoder som kaldes i checkStatus
+         */ //checkStatus() metode inaktiv
 
     /* public boolean isHealthCritical() {
         if (currentHealth < (healthMax / 4)) {
@@ -182,13 +204,6 @@ public class Character {
         } else {
             return false;
         }
-    }
-
-
-
-    public double getHealthPercentage() {
-        double healthPercentage = (double) currentHealth / healthMax * 100;
-        return healthPercentage;
     }
 
     public void takeDamage(int amount) {

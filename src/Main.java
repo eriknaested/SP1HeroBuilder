@@ -10,7 +10,7 @@ public class Main {
             String characterName = scanner.nextLine();
             System.out.println("Choose your class");
             Character.printClasses();
-            String choice = scanner.nextLine();
+            String choice = scanner.nextLine(); //Her BURDE man nok lave en switch menu
 
             Character character1 = new Character(characterName, choice, 100); //opretter karakter
             character1.equipWeapon(new Weapon("Mace", 15)); //karakter 1 får et weapon
@@ -20,10 +20,15 @@ public class Main {
             character2.equipWeapon(new Weapon("Sword", 16));
             character2.equipArmor(new Armor("Leather helmet", 1));
 
-            character1.getInventory().addItem(new Item("Health potion", 1,10));
-            character1.getInventory().addItem(new Item("Mana potion", 1,8));
+            Item item1 = new Item("Health potion", 1, 10);
+            Item item2 = new Item("Mana potion", 2, 8);
 
-            character2.getInventory().addItem(new Item("Rotten apple", 2,2));
+            character1.getInventory().addItem(item1);
+            character1.getInventory().addItem(item2);
+
+            character1.getInventory().removeItem(item2);
+
+            character2.getInventory().addItem(new Item("Rotten apple", 2,2)); //Problem! Man kan ikke se, hvilken inventory, det tilføjes til.
             character2.getInventory().addItem(new Item("Ripe pear", 1,5));
 
             character1.printCharacterSheet();        //Kalder på et objekt, som kalder på en metode, som printer info om character
@@ -31,15 +36,25 @@ public class Main {
             character1.printCharacterInfo();
             character2.printCharacterInfo();
 
-            System.out.println("Fight commencing!");
+            Combat.combat(character1, character2);
 
-            for (int round = 1; character1.isAlive() || character2.isAlive(); round++) {
-                character1.attack(character2);
-                character2.attack(character1);
-                character1.heal();
-                character2.heal();
-            }
+            Character character3 = new Character("Orc", "Hunter", 80);
+            character3.equipWeapon(new Weapon("Bow", 20));
+            character3.equipArmor(new Armor("Leather boots", 5));
 
+            System.out.println("A new foe emerges!");
+            character3.printCharacterInfo();
 
+            Combat.combat(character1, character3);
+
+            Character character4 = new Character("Bossman", "Mage", 200);
+            character4.equipWeapon(new Weapon("Staff", 25));
+            character4.equipArmor(new Armor("Gandalf's magic robe", 7));
+
+            character4.setLevel(5);
+            System.out.println("A stronger enemy steps forward!");
+            character4.printCharacterInfo();
+
+            Combat.combat(character1, character4);
     }
 }
