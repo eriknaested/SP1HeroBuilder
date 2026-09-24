@@ -10,7 +10,7 @@ public class Inventory {
     public void addItem(Item item) {
         if(currentItems < MAX_ITEMS) {
             items.add(item);
-            System.out.println(item + " was added to inventory");
+            System.out.println(item.getName() + " was added to inventory");
         } else {
             System.out.println("Inventory is full");
         }
@@ -21,7 +21,7 @@ public class Inventory {
             items.remove(item);
             System.out.println(item + " was removed from inventory");
         } else {
-            System.out.println("Inventory is empty. Cannot remove item");
+            System.out.println("Inventory is empty. No items to remove");
         }
     }
 

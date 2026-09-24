@@ -13,4 +13,16 @@ public class Item {
     public String toString() { //Laver en toString til at displaye hver item
         return "Item: " + name + "\nWeight: " + weight + "\nValue: " + value + "g";
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public double getValue() {
+        return value;
+    }
 }

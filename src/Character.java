@@ -6,7 +6,7 @@ public class Character {
     private final String classification; //Class er final da det heller ikke skal ændres senere
     private int currentHealth;
     private int level = 1; //Alle starter i lvl 1
-    private int healthMax = 100 + (level - 1) * 20 ; //Max health er ikke final, da vi ønsker mulighed for at øge den med ved level up.
+    private int healthMax; ; //Max health er ikke final, da vi ønsker mulighed for at øge den med ved level up.
     //i tillæg har vi en funktion, som øger healthMax med 20 ved hvert level up.
     private int experiencePoints = 0;
     private double gold;
@@ -16,9 +16,10 @@ public class Character {
     private Armor armor;
     Random random = new Random(); //Opretter en random number generator til combat
 
-    public Character(String name, String classification) {
+    public Character(String name, String classification, int healthMax) {
         this.name = name;
         this.classification = classification;
+        this.healthMax = healthMax;
         this.currentHealth = healthMax;
         this.inventory = new Inventory();
     }
@@ -97,8 +98,16 @@ public class Character {
         System.out.println(name + " healed for " + heal + " damage!");
     }
 
-    public String getClassification() {
-        return classification;
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+
+    public boolean isAlive() {
+        if (currentHealth > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /*
@@ -141,7 +150,7 @@ public class Character {
         }
     }
 
-    public void checkStatus() {
+    /* public void checkStatus() {
         if (isHealthCritical()) {
             System.out.println("WARNING: Health critical!");
         }
@@ -152,7 +161,7 @@ public class Character {
         }
         getHealthPercentage();
         System.out.println("Current health: " + getHealthPercentage() + " % of max health");
-        /*if (currentHealth < (healthMax / 4)) {
+        if (currentHealth < (healthMax / 4)) {
             System.out.println("Current health: " + currentHealth);
             System.out.println("WARNING: Health critical!");
         } else {
@@ -166,9 +175,8 @@ public class Character {
         System.out.println("Hero alive: " + isAlive);
         displayDivider();
          */ //Udekommenteret if-statements, da isHealthCritical og isAlive laves til egne metoder som kaldes i checkStatus
-    }
 
-    public boolean isHealthCritical() {
+    /* public boolean isHealthCritical() {
         if (currentHealth < (healthMax / 4)) {
             return true;
         } else {
@@ -176,13 +184,7 @@ public class Character {
         }
     }
 
-    public boolean isAlive() {
-        if (currentHealth > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
 
     public double getHealthPercentage() {
         double healthPercentage = (double) currentHealth / healthMax * 100;
@@ -194,18 +196,6 @@ public class Character {
         System.out.println("Damage taken: " + amount);
         System.out.println("Current health: " + currentHealth);
         Formatting.displayHeader();
-    }
-
-    public void heal(int amount) {
-        if (currentHealth + amount < healthMax) {
-            currentHealth += amount;
-            System.out.println("Healed: " + amount);
-        } else {             //Dette if-statement gør, at man ikke kan heale, hvis man ville heale over max health.
-            //Hvordan tilføjer man en mulighed for det tredje scenarie?
-            System.out.println("Already full health");
-        }
-        System.out.println("Current health: " + currentHealth);
-        Formatting.displayDivider();
     }
 
     public void checkGold() {
@@ -235,6 +225,8 @@ public class Character {
         System.out.println("XP gained: " + amount);
         checkLevelUp();
     }
+
+     */
 
 
 

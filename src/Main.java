@@ -12,12 +12,12 @@ public class Main {
             Character.printClasses();
             String choice = scanner.nextLine();
 
-            Character character1 = new Character(characterName, choice); //opretter karakter
-            character1.equipWeapon(new Weapon("Mace", 5)); //karakter 1 får et weapon
+            Character character1 = new Character(characterName, choice, 100); //opretter karakter
+            character1.equipWeapon(new Weapon("Mace", 15)); //karakter 1 får et weapon
             character1.equipArmor(new Armor("Metal chestplate", 3));
 
-            Character character2 = new Character("Goblin", "Warrior");
-            character2.equipWeapon(new Weapon("Sword", 6));
+            Character character2 = new Character("Goblin", "Warrior", 30);
+            character2.equipWeapon(new Weapon("Sword", 16));
             character2.equipArmor(new Armor("Leather helmet", 1));
 
             character1.getInventory().addItem(new Item("Health potion", 1,10));
@@ -28,34 +28,18 @@ public class Main {
 
             character1.printCharacterSheet();        //Kalder på et objekt, som kalder på en metode, som printer info om character
 
+            character1.printCharacterInfo();
+            character2.printCharacterInfo();
+
             System.out.println("Fight commencing!");
-            character1.printCharacterInfo();
-            character2.printCharacterInfo();
 
-            character1.attack(character2);
-            character2.attack(character1);
-            character1.attack(character2);
-            character2.attack(character1);
-            character1.heal();
-            character2.heal();
-            character1.printCharacterInfo();
-            character2.printCharacterInfo();
+            for (int round = 1; character1.isAlive() || character2.isAlive(); round++) {
+                character1.attack(character2);
+                character2.attack(character1);
+                character1.heal();
+                character2.heal();
+            }
 
-            character1.levelUp();
-            character1.printCharacterInfo();
 
-            /*
-            callHeroInfo();
-            callInventory();                //Kalder på en metode, som samler inventory
-            checkStatus();
-            checkLevelUp();
-            takeDamage(80);
-            heal(70);
-            addGold(50);
-            removeGold(25);
-            addXP(500);
-            levelUp();
-
-             */
     }
 }
