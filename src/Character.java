@@ -2,20 +2,22 @@ import java.util.ArrayList;
 
 public class Character {
 
-    private String name;
+    private final String name; //Navn er final så det ikke ændres
+    private final char classification; //Class er final da det heller ikke skal ændres senere
     private int currentHealth;
-    private static int healthMax = 100;
-    private static int level = 1;
-    private int experiencePoints;
+    private int healthMax = 100;
+    private int level = 1;
+    private int experiencePoints = 0;
     private double gold;
     // boolean isAlive;  Boolean bruges ikke længere, da vi har lavet en metode til isAlive()
-    private char classification;
-    private ArrayList<Item> inventory;
+    private Inventory inventory;
+    private Weapon weapon;
 
     public Character(String name, char classification) {
         this.name = name;
         this.classification = classification;
         this.currentHealth = healthMax;
+        this.inventory = new Inventory();
     }
 
     public String getHeroClass() {
@@ -29,47 +31,47 @@ public class Character {
         };
     }
 
-    public void displayHeader() {
-        System.out.println("=============================");
-    }
-
-    void displayDivider() {
-        System.out.println("----------------------------");
-    }
-
     //Mangler stadig "Udskriv forskellige beskeder baseret på klasse (‘W’, ‘M’, ‘R’)"
 
     public void callHeroInfo() {
-        displayHeader();
+        Formatting.displayHeader();
         System.out.println("Hero name: " + name);
         System.out.print("Class: ");
         System.out.println(getHeroClass());
-        displayDivider();
+        Formatting.displayDivider();
         System.out.println("HP: " + currentHealth + " out of " + healthMax);
         System.out.println("Level: " + level);
         System.out.println("XP: " + experiencePoints);
         System.out.println("Gold: " + gold);
-        displayDivider();
+        Formatting.displayDivider();
     }
 
-    public void callInventory() {
-        System.out.println("Inventory (" + inventory.length + " items):");
-        displayDivider();
-        /*for (int i = 0; i < inventory.length; i++) {
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    /*
+        System.out.println("Inventory (" + inventory + " items):");
+        Formatting.displayHeader();
+        for (int i = 0; i < inventory.length; i++) {
             System.out.println(" - " + inventory[i]);
-        } */
+        }
         for (String item : inventory) {         //For each loop er mere læseligt end alm. for loop her.
             System.out.println(" - " + item);
         }
-        displayDivider();
-    }
+        Formatting.displayDivider();
+        */
 
     public boolean canLevelUp() {
         return experiencePoints > 1000 * level;
     }
 
     public void checkLevelUp() {
-        displayDivider();
+        Formatting.displayHeader();
         System.out.println("Current XP: " + experiencePoints);
         int xpForLevelUp = 1000 * level;
         int xpNeeded = xpForLevelUp - experiencePoints;
@@ -78,7 +80,7 @@ public class Character {
         } else {
             System.out.println("XP needed for level up: " + xpNeeded);
         }
-        displayDivider();
+        Formatting.displayDivider();
     }
 
     public void levelUp() {
@@ -144,7 +146,7 @@ public class Character {
         currentHealth -= amount;
         System.out.println("Damage taken: " + amount);
         System.out.println("Current health: " + currentHealth);
-        displayDivider();
+        Formatting.displayHeader();
     }
 
     public void heal(int amount) {
@@ -156,12 +158,12 @@ public class Character {
             System.out.println("Already full health");
         }
         System.out.println("Current health: " + currentHealth);
-        displayDivider();
+        Formatting.displayDivider();
     }
 
     public void checkGold() {
         System.out.println("Current gold: " + gold);
-        displayDivider();
+        Formatting.displayHeader();
     }
 
     public void addGold (double amount) {

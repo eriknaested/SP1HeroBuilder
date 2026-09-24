@@ -10,7 +10,7 @@ public class Item {
         this.value = value;
     }
 
-    public void addItem() {
-
+    public String toString() { //Laver en toString til at displaye hver item
+        return "Item: " + name + "\nWeight: " + weight + "\nValue: " + value + "g";
     }
 }
