@@ -1,15 +1,11 @@
 public class Weapon {
 
-    String name;
-    int attackPower;
+    private final String name;
+    private final int attackPower;
 
     Weapon(String name, int attackPower){
         this.name = name;
         this.attackPower = attackPower;
-    }
-
-    public void equipWeapon(Weapon weapon) {
-
     }
 
     public String getName() {
@@ -18,5 +14,10 @@ public class Weapon {
 
     public int getAttackPower() {
         return attackPower;
+    }
+
+    public void weaponInfo() {
+        System.out.println(name + ": " + attackPower + " attack power");
+        Formatting.displayDivider();
     }
 }

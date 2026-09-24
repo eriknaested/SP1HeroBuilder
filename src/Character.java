@@ -1,49 +1,58 @@
-import java.util.ArrayList;
+import java.util.Random;
 
 public class Character {
 
     private final String name; //Navn er final så det ikke ændres
-    private final char classification; //Class er final da det heller ikke skal ændres senere
+    private final String classification; //Class er final da det heller ikke skal ændres senere
     private int currentHealth;
-    private int healthMax = 100;
-    private int level = 1;
+    private int level = 1; //Alle starter i lvl 1
+    private int healthMax = 100 + (level - 1) * 20 ; //Max health er ikke final, da vi ønsker mulighed for at øge den med ved level up.
+    //i tillæg har vi en funktion, som øger healthMax med 20 ved hvert level up.
     private int experiencePoints = 0;
     private double gold;
     // boolean isAlive;  Boolean bruges ikke længere, da vi har lavet en metode til isAlive()
     private Inventory inventory;
-    private Weapon weapon;
+    private Weapon weapon; //tilføjer weapon og armor, som har betydning for combat
+    private Armor armor;
+    Random random = new Random(); //Opretter en random number generator til combat
 
-    public Character(String name, char classification) {
+    public Character(String name, String classification) {
         this.name = name;
         this.classification = classification;
         this.currentHealth = healthMax;
         this.inventory = new Inventory();
     }
 
-    public String getHeroClass() {
-        return switch (classification) {
-            case 'P' -> classification + " (Paladin)";
-            case 'W' -> classification + " (Warrior)";
-            case 'M' -> classification + " (Mage)";
-            case 'H' -> classification + " (Hunter)";
-            case 'R' -> classification + " (Rogue)";
-            default -> classification + " (Invalid class)";
-        };
-    }
-
     //Mangler stadig "Udskriv forskellige beskeder baseret på klasse (‘W’, ‘M’, ‘R’)"
 
-    public void callHeroInfo() {
+    public void printCharacterSheet() {
         Formatting.displayHeader();
-        System.out.println("Hero name: " + name);
-        System.out.print("Class: ");
-        System.out.println(getHeroClass());
+        System.out.println("Character name: " + name);
+        System.out.print("Class: " + classification);
+        System.out.println();
         Formatting.displayDivider();
         System.out.println("HP: " + currentHealth + " out of " + healthMax);
         System.out.println("Level: " + level);
         System.out.println("XP: " + experiencePoints);
         System.out.println("Gold: " + gold);
         Formatting.displayDivider();
+        getInventory().printInventory();
+        getWeapon().weaponInfo();
+        getArmor().armorInfo();
+    }
+
+    public void printCharacterInfo() {
+        System.out.println(" === " + name + " === ");
+        System.out.println("Level: " + level + " | " + "Health: " + currentHealth + "/" + healthMax + " | " + "Gold: " + gold);
+    }
+
+    public static void printClasses() {
+        System.out.println("--- Class overview ---");
+        System.out.println("1. Paladin");
+        System.out.println("2. Warrior");
+        System.out.println("3. Hunter");
+        System.out.println("4. Mage");
+        System.out.println("5. Rogue");
     }
 
     public Inventory getInventory() {
@@ -52,6 +61,44 @@ public class Character {
 
     public Weapon getWeapon() {
         return weapon;
+    }
+
+    public Armor getArmor() {
+        return armor;
+    }
+
+    public void equipWeapon(Weapon weapon) {
+        this.weapon = weapon;
+    }
+
+    public void equipArmor(Armor armor) {
+        this.armor = armor;
+    }
+
+    public void attack(Character target) { //Objekt angriber andet objekt.
+        int damage = weapon.getAttackPower() + (random.nextInt(6) + 1) - armor.getDefensePower();
+        //Damage regnes ud fra våbens attackPower + et terningekast på 1 til 6. defensePower fra armor trækkes fra endelige damage.
+        if(damage > 0) { //Target kan kun tage damage, hvis det er over 0.
+            // Dette sikrer, at et angreb ikke healer target, hvis de fx. har meget defensePower.
+            target.currentHealth -= damage;
+        }
+        if (currentHealth < 0) { //Health kan ikke komme under 0
+            currentHealth = 0;
+        }
+        System.out.println(name + " attacked " + target.name + " for " + damage + " damage!");
+    }
+
+    public void heal() {
+        int heal = random.nextInt(6) + 1;
+        currentHealth += heal; //Healer ud fra et terningekast
+        if (currentHealth + heal > healthMax){
+            healthMax = 100 + (level - 1) * 20;
+        }
+        System.out.println(name + " healed for " + heal + " damage!");
+    }
+
+    public String getClassification() {
+        return classification;
     }
 
     /*
